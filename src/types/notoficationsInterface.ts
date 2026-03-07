@@ -13,7 +13,7 @@ export interface Notification {
   _id: string
   recipient: Recipient
   actor: Actor
-  type: string
+  type: "comment_post" | "like_post" | "share_post"
   entityType: string
   entityId: string
   isRead: boolean

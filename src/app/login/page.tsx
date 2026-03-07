@@ -49,7 +49,8 @@ export default function Login() {
     })
 
     if (resp?.ok) {
-      window.location.href = '/'
+router.push('/')
+  router.refresh() 
     } else {
       seterror('invalid email or password')
     }

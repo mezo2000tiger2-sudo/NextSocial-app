@@ -19,8 +19,8 @@ import SkelatonPost from "../SkelatonPost/SkelatonPost";
 import { PostItem } from "../PostItem/PostItem";
 
 
-export default function PostCard({pages, user , isLoading , page}:{pages:PostInterface , user:any , isLoading:boolean , page:string} ) {
-  
+export default function PostCard({ pages, user, isLoading, page }: { pages: PostInterface, user: any, isLoading: boolean, page: string }) {
+
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(3);
 
@@ -28,19 +28,20 @@ export default function PostCard({pages, user , isLoading , page}:{pages:PostInt
     setLiked(!liked);
     setLikes(liked ? likes - 1 : likes + 1);
   }
-  console.log('pages2',user?.user._id);
-  if(isLoading){
-  return <><div className="flex flex-col"><SkelatonPost/> <SkelatonPost/></div></>
-}
-  
+  console.log('pages2', user?.user._id);
+  if (isLoading) {
+    return <><div className="flex flex-col"><SkelatonPost /> <SkelatonPost /></div></>
+  }
+
 
   return (
     <>
 
-    
-    {pages?.data.posts?.map((post:Post)=>{return <PostItem key={post._id} post={post} user={user} page={page}/>
-  })}
-    
+
+      {pages?.data?.posts?.map((post: Post) => {
+        return <PostItem key={post._id} post={post} user={user} page={page} />
+      })}
+
     </>
   );
 }

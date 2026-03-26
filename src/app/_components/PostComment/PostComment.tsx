@@ -34,7 +34,7 @@ export default function PostComment({iscomment , user , post , postId} :{iscomme
         }
         const resp = await addComment({ formData: formdata, postId: post._id })
         console.log('create',resp);
-        if(resp.success == true){
+        if(resp?.success == true){
             setpostContent('')
             setpostIMG(null)
             setpostIMGURL(null)

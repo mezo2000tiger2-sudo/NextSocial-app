@@ -62,14 +62,14 @@ export default function settinges() {
   async function submitForm(values: zod.infer<typeof ChangePasswordSchema>) {
     setisLoading(true)
     const resp = await PatchPassword(values)
-    if (resp.success == true) {
+    if (resp?.success == true) {
       window.location.href = '/login'
       signOut({ callbackUrl: '/login' })
       console.log('settings', resp);
 
     } else {
       console.log('settings', resp);
-      seterror(resp.message)
+      seterror(resp?.message ?? 'Something went wrong')
     }
     setisLoading(false)
   }

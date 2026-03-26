@@ -41,7 +41,7 @@ export default function UpdateComment({data ,  page , postId , open , onOpenChan
         }
         const resp = await updateComment({formdata , postId ,commentId})
         console.log('update',resp);
-        if(resp.success == true){
+        if(resp?.success == true){
             setpostContent('')
             setpostIMG(null)
             setpostIMGURL(null)

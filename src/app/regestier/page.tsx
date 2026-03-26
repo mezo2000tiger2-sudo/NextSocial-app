@@ -80,10 +80,10 @@ export default function Regestier() {
     }
     console.log(formattedValues)
     const resp = await RegestierCall(formattedValues)
-    if (resp.success == true) {
+    if (resp?.success == true) {
       window.location.href = '/login'
     } else {
-      seterror(resp.message)
+      seterror(resp?.message ?? 'Something went wrong')
     }
     setisLoading(false)
   }

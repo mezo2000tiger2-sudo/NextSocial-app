@@ -94,6 +94,8 @@ export default function SinglePost() {
     }
 
   })
+  const [likes, setLikes] = useState<number>(post?.likesCount ?? 0);
+
   useEffect(() => {
     if (!post) return;
     setsaved(post.bookmarked === true);
@@ -104,8 +106,6 @@ export default function SinglePost() {
     setLiked(post?.likes?.includes(user?.user?._id) ?? false);
     setLikes(post?.likesCount ?? 0);
   }, [post?.likes, post?.likesCount, user?.user?._id]);
-
-  const [likes, setLikes] = useState<number>(post?.likesCount ?? 0);
   const querClient = useQueryClient()
 
   const { mutate, data: likeData, isPending: isLiking } = useMutation({
@@ -328,7 +328,11 @@ export default function SinglePost() {
                   </Field>
                   <div className="bg-gray-200 rounded-lg overflow-hidden pt-2 2-full px-0.5">
                     <div className="flex items-start gap-3">
-                      <img className="h-11 w-11 rounded-full object-cover" src={post.user?.photo} alt={post.user.name} />
+                      <img
+                        className="h-11 w-11 rounded-full object-cover"
+                        src={post.user?.photo || (logo as unknown as string)}
+                        alt={post.user?.name ?? "user avatar"}
+                      />
                       <div>
                         <div className="flex items-center gap-2">
                           <p className="font-bold text-slate-900 text-sm">{post.user?.name}</p>
@@ -336,7 +340,25 @@ export default function SinglePost() {
                         </div>
                         <div className="flex items-center gap-1 text-slate-500 text-xs">
                           {post.body == 'updated profile picture.' ? '' : <><span>@{post.user?.username}</span><span>·</span></>}
-                          <span>{formatDistanceToNow(new Date(post?.createdAt), { addSuffix: true })}</span>
+                          {(() => {
+                            const createdAtValue = post?.createdAt;
+                            const createdAtDate =
+                              createdAtValue instanceof Date
+                                ? createdAtValue
+                                : createdAtValue
+                                ? new Date(createdAtValue)
+                                : null;
+
+                            if (!createdAtDate || isNaN(createdAtDate.getTime())) {
+                              return <span>Just now</span>;
+                            }
+
+                            return (
+                              <span>
+                                {formatDistanceToNow(createdAtDate, { addSuffix: true })}
+                              </span>
+                            );
+                          })()}
                         </div>
                         {saved && <Badge variant="default" className="mt-2 bg-blue-50 text-blue-600">
                           Bookmark
@@ -386,14 +408,14 @@ export default function SinglePost() {
                   <div className="flex items-center justify-between px-1 md:px-4 pt-4 pb-3">
                     <div key={comment._id} className="flex items-start gap-3 mt-2 w-full">
                       <Image
-                        src={comment.commentCreator.photo || logo}
+                        src={comment.commentCreator?.photo || logo}
                         alt="commentcreator"
                         width={36}
                         height={36}
                         className="w-9 h-9 rounded-full"
                       />
                       <div className="bg-white rounded-lg p-3  w-2/3">
-                        <p className="font-bold text-slate-900 text-sm">{comment.commentCreator.name}</p>
+                        <p className="font-bold text-slate-900 text-sm">{comment.commentCreator?.name ?? "Unknown"}</p>
                         <p className="text-slate-600 text-sm mt-0.5">{comment.content}</p>
                         {comment.image && (
                           <img src={comment.image} alt="" className="w-full h-50 rounded-lg object-cover" />
@@ -401,7 +423,7 @@ export default function SinglePost() {
 
                       </div>
                     </div>
-                    {user?.user._id == comment.commentCreator._id && <>
+                    {user?.user?._id === comment.commentCreator?._id && <>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <button className="border-0 ring-0 cursor-pointer focus-visible:outline-0">

@@ -42,7 +42,7 @@ export default function UpdatePost({data ,  page , postId , open , onOpenChange}
         }
         const resp = await updatePost({formdata , postId})
         console.log('update',resp);
-        if(resp.success == true){
+        if(resp?.success == true){
             setpostContent('')
             setpostIMG(null)
             setpostIMGURL(null)

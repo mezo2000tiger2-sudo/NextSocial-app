@@ -31,7 +31,7 @@ export default function CreatePost({data , page}:any) {
         }
         const resp = await addPost(formdata)
         console.log(resp);
-        if(resp.success == true){
+        if(resp?.success == true){
             setpostContent('')
             setpostIMG(null)
             setpostIMGURL(null)

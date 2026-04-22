@@ -4,7 +4,6 @@ import "./globals.css";
 import Nav from "./_components/Nav/Nav";
 import AuthSessionProvidor from "./providor/authSessionProvidor";
 import QueryProvidor from "./providor/QueryProvidor";
-import { PostProvider } from "./context/pageContext";
 
 
 const geistSans = Geist({
@@ -35,10 +34,8 @@ export default function RootLayout({
       >
         <AuthSessionProvidor>
             <QueryProvidor>
-              <PostProvider>
               <Nav/>
               {children}
-              </PostProvider>
             </QueryProvidor>
         </AuthSessionProvidor>
       </body>

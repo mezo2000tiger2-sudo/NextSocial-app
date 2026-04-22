@@ -3,7 +3,7 @@
 import { FailedLogin, SuccesLogin } from "@/types/authInterface"
 
 export async function RegestierCall(values: any) {
-  const resp = await fetch(`${process.env.API}/users/signup`, {
+  const resp = await fetch(`https://route-posts.routemisr.com/users/signup`, {
     method: 'POST',
     body: JSON.stringify(values),
     headers: { 'Content-Type': 'application/json' }

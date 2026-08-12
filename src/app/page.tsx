@@ -6,7 +6,6 @@ import CreatePost from "./_components/CreatePost/CreatePost";
 import PostCard from "./_components/PostCard/PostCard";
 import { getPosts } from "./servieces/HomePage/getPosts";
 import SkelatonPost from "./_components/SkelatonPost/SkelatonPost";
-import { usePost } from "./context/pageContext";
 import { getSuggestedFollowers } from "./servieces/HomePage/getSuggestedFollowers";
 import { SuggestedFollowers } from "./_components/SuggestedFollowrs/SuggetedFollowers";
 import { getProfile } from "./servieces/profile/getProfile";
@@ -29,8 +28,7 @@ const {data:suggestionData , isLoading:isSuggested}=useQuery({
   queryFn:getSuggestedFollowers,
   
 })
-const { Page, setpage } = usePost()
-useEffect(() => { setpage(page) }, [page])
+
 console.log('suggested',suggestionData);
 
 

@@ -1,4 +1,3 @@
-import { usePost } from '@/app/context/pageContext'
 import { addComment } from '@/app/servieces/comments/createComment'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -9,11 +8,9 @@ import React, { useState } from 'react'
 
 export default function PostComment({iscomment , user , post , postId} :{iscomment:boolean , user:any , post:Post , postId:string}) {
     const [postContent, setpostContent] = useState('')
-    const { Page, setpage } = usePost()
     const [postIMG, setpostIMG] = useState<File | null>(null)
     const [postIMGURL, setpostIMGURL] = useState<string | null>(null)
     const [isLoading, setisLoading] = useState(false)
-    console.log('page', Page);
     
   const quaryclient = useQueryClient()
     async function CPostForm(){

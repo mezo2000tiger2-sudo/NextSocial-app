@@ -36,6 +36,7 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SharePost } from "@/app/servieces/Posts/sharePost";
+import UserProfileDialog from "../UserProfileDialog/UserProfileDialog";
 
 export function PostItem({ post, user, page }: { post: Post; user: any, page: string }) {
   const [liked, setLiked] = useState(() => post.likes?.includes(user?.user._id) ?? false);
@@ -44,6 +45,8 @@ export function PostItem({ post, user, page }: { post: Post; user: any, page: st
   const [editOpen, setEditOpen] = useState(false)
   const [editcommentOpen, setEditcommentOpen] = useState(false)
   const [shareValue, setshareValue] = useState('')
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [profileUserId, setProfileUserId] = useState<string | null>(null)
   const { mutate: share, data: shareData, isPending } = useMutation({
     mutationKey: ['share post', post._id],
     mutationFn: SharePost,
@@ -125,6 +128,12 @@ export function PostItem({ post, user, page }: { post: Post; user: any, page: st
     mutate();
   }
 
+  function openProfile(id?: string) {
+    if (!id) return
+    setProfileUserId(id)
+    setProfileOpen(true)
+  }
+
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-slate-200 max-w-2xl mx-auto overflow-hidden w-full">
       <UpdatePost
@@ -136,11 +145,11 @@ export function PostItem({ post, user, page }: { post: Post; user: any, page: st
       />
       {/* Header */}
       <div className="flex items-center justify-between px-4 pt-4 pb-3">
-        <div className="flex items-start gap-3">
-          <img className="h-11 w-11 rounded-full object-cover" src={post.user.photo} alt={post.user.name} />
+        <div className="flex items-start gap-3 cursor-pointer group" onClick={() => openProfile(post.user._id)}>
+          <img className="h-11 w-11 rounded-full object-cover transition group-hover:opacity-80" src={post.user.photo} alt={post.user.name} />
           <div>
             <div className="flex items-center gap-2">
-              <p className="font-bold text-slate-900 text-sm">{post.user.name}</p>
+              <p className="font-bold text-slate-900 text-sm group-hover:underline">{post.user.name}</p>
               <p className="text-xs text-gray-400">{post.body == 'updated profile picture.' ? 'updated profile picture.' : ''}</p>
             </div>
             <div className="flex items-center gap-1 text-slate-500 text-xs">
@@ -199,11 +208,11 @@ export function PostItem({ post, user, page }: { post: Post; user: any, page: st
       {post.sharedPost != null && <> <div className="mx-4  pt-2 my-1 rounded-lg overflow-hidden bg-gray-200">
         <div className="flex items-center justify-between px-2 pt-2">
 
-          <div className="flex items-start gap-3">
-            <img className="h-10 w-10 rounded-full object-cover" src={post.sharedPost.user.photo} alt={post.sharedPost.user.name} />
+          <div className="flex items-start gap-3 cursor-pointer group" onClick={() => openProfile(post.sharedPost?.user._id)}>
+            <img className="h-10 w-10 rounded-full object-cover transition group-hover:opacity-80" src={post.sharedPost.user.photo} alt={post.sharedPost.user.name} />
             <div>
               <div className="flex items-center gap-2">
-                <p className="font-bold text-slate-900 text-sm">{post.sharedPost.user.name}</p>
+                <p className="font-bold text-slate-900 text-sm group-hover:underline">{post.sharedPost.user.name}</p>
                 <p className="text-xs text-gray-400">{post.sharedPost.body == 'updated profile picture.' ? 'updated profile picture.' : ''}</p>
               </div>
               <div className="flex items-center gap-1 text-slate-500 text-xs">
@@ -376,6 +385,13 @@ export function PostItem({ post, user, page }: { post: Post; user: any, page: st
           </div>
         </>
       )}
+
+      <UserProfileDialog
+        userId={profileUserId}
+        currentUserId={user?.user._id}
+        open={profileOpen}
+        onOpenChange={setProfileOpen}
+      />
     </div>
   );
 }
